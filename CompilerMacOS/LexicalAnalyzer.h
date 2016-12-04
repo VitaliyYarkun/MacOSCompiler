@@ -14,7 +14,7 @@
 @property (strong, nonatomic) NSMutableArray *variables;
 @property (strong, nonatomic) NSMutableArray *keywords;
 @property (strong, nonatomic) NSMutableArray *symbols;
-//@property (strong, nonatomic) NSMutableArray *boolOperators;
+@property (strong, nonatomic) NSMutableArray *lexemes;
 @property (strong, nonatomic) NSMutableArray *operators;
 
 + (instancetype)sharedInstance;

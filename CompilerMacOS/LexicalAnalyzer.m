@@ -38,16 +38,17 @@
 {
     self.arrayOfRowsElements = [[NSMutableArray alloc]  init];
     self.keywords = [[NSMutableArray alloc] init];
-    self.operators = [NSMutableArray array];
-    self.variables = [NSMutableArray array];
-    self.symbols = [NSMutableArray array];
+    self.operators = [[NSMutableArray alloc] init];
+    self.variables = [[NSMutableArray alloc] init];
+    self.symbols = [[NSMutableArray alloc] init];
+    self.lexemes = [[NSMutableArray alloc] init];
     self.programCode = code;
     
     [self saveSeperateWords];
     [self saveKeywordsToArray];
-    [self saveOperatorsToArray];
+    //[self saveOperatorsToArray];
     [self saveLiteralsToArray];
-    [self saveVariablesToArray];
+    //[self saveVariablesToArray];
     
 }
 
@@ -92,9 +93,10 @@
 -(void) saveKeywordsToArray
 {
     
-    NSMutableArray *discardedItems = [NSMutableArray array];
+    //NSMutableArray *discardedItems = [NSMutableArray array];
     for (NSMutableArray *rowComponents in self.arrayOfRowsElements)
     {
+        [self checkForAllowedKeywords:rowComponents];
         //for (NSString *rowComponent in rowComponents)
         //{
 //            for (NSString *allowedKeyword in allowedKeywords)
@@ -108,29 +110,30 @@
 //            }
             
         //}
-        if (discardedItems.count == 1) {
-            [rowComponents removeObject:discardedItems.firstObject];
-        }
-        
-        else if (discardedItems.count > 1) {
-            [rowComponents removeObjectsInArray:discardedItems];
-        }
-        
-        [discardedItems removeAllObjects];
+//        if (discardedItems.count == 1) {
+//            [rowComponents removeObject:discardedItems.firstObject];
+//        }
+//        
+//        else if (discardedItems.count > 1) {
+//            [rowComponents removeObjectsInArray:discardedItems];
+//        }
+//        
+//        [discardedItems removeAllObjects];
     }
     
 }
 
 -(void) checkForAllowedKeywords:(NSMutableArray *) rowComponents {
     NSString *previousElement = @"";
-    for (NSInteger i = 0; i <= [rowComponents count]; i++) {
+    for (NSInteger i = 0; i < [rowComponents count]; i++) {
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Name"]) {
             Keyword *keyword = [[Keyword alloc] init];
             keyword.catagory = @"Keyword";
             keyword.type = @"Name";
-            keyword.identifier = [rowComponents objectAtIndex:i+1];
+            keyword.identifier = @"Name";
             keyword.value = @"";
             [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
             
             Variable *variable = [[Variable alloc] init];
             variable.catagory = @"Variable";
@@ -138,6 +141,7 @@
             variable.identifier = [rowComponents objectAtIndex:i+1];
             variable.value = @"";
             [self.variables addObject:variable];
+            [self.lexemes addObject:variable];
             i++;
         }
 
@@ -145,9 +149,11 @@
             Keyword *keyword = [[Keyword alloc] init];
             keyword.catagory = @"Keyword";
             keyword.type = @"BodyData";
-            keyword.identifier = @"";
+            keyword.identifier = @"BodyData";
             keyword.value = @"";
             [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+
         }
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"{"]) {
             Symbol *symbol = [[Symbol alloc] init];
@@ -156,6 +162,8 @@
             symbol.identifier = @"{";
             symbol.value = @"";
             [self.symbols addObject:symbol];
+            [self.lexemes addObject:symbol];
+
         }
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Int16_t"]) {
             BOOL checkIfCorrect = NO;
@@ -179,17 +187,21 @@
                 Keyword *keyword = [[Keyword alloc] init];
                 keyword.catagory = @"Keyword";
                 keyword.type = @"Int16_t";
-                keyword.identifier = [rowComponents objectAtIndex:i+1];
+                keyword.identifier = @"Int16_t";
                 keyword.value = @"";
                 previousElement = @"Int16_t";
                 [self.keywords addObject:keyword];
+                [self.lexemes addObject:keyword];
+
                 
                 Variable *variable = [[Variable alloc] init];
                 variable.catagory = @"Variable";
-                variable.type = [rowComponents objectAtIndex:i];
+                variable.type = @"Int16_t";
                 variable.identifier = [rowComponents objectAtIndex:i+1];
                 variable.value = [rowComponents objectAtIndex:i+3];
                 [self.variables addObject:variable];
+                [self.lexemes addObject:variable];
+
                 
                 Operator *operator = [[Operator alloc] init];
                 operator.catagory = @"Operator";
@@ -197,43 +209,96 @@
                 operator.identifier = @":=";
                 operator.value = @"";
                 [self.operators addObject:operator];
+                [self.lexemes addObject:operator];
+
+                i += 3;
             }
-            
         }
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"}"]) {
+            Symbol *symbol = [[Symbol alloc] init];
+            symbol.catagory = @"Symbol";
+            symbol.type = @"CloseBlock";
+            symbol.identifier = @"}";
+            symbol.value = @"";
+            [self.symbols addObject:symbol];
+            [self.lexemes addObject:symbol];
+
+        }
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"Repeat"]) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"Loop";
+            keyword.identifier = @"Repeat";
+            keyword.value = @"";
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"++"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Math";
+            operator.identifier = @"++";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.keywords addObject:operator];
+
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"--"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Math";
+            operator.identifier = @"--";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.keywords addObject:operator];
+
+        }
+        
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"Until"]) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"Loop";
+            keyword.identifier = @"Until";
+            keyword.value = @"";
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+        }
+        
     }
 }
 
--(void) saveOperatorsToArray
-{
-    
-    NSMutableArray *discardedItems = [NSMutableArray array];
-    for (NSMutableArray *rowComponents in self.arrayOfRowsElements)
-    {
-        for (NSString *rowComponent in rowComponents)
-        {
-            for (NSString *allowedKeyword in allowedOperators)
-            {
-                if ([rowComponent isEqualToString:allowedKeyword])
-                {
-                    [self.operators addObject:rowComponent];
-                    [discardedItems addObject:rowComponent];
-                }
-                
-            }
-            
-        }
-        if (discardedItems.count == 1) {
-            [rowComponents removeObject:discardedItems.firstObject];
-        }
-        
-        else if (discardedItems.count > 1) {
-            [rowComponents removeObjectsInArray:discardedItems];
-        }
-        
-        [discardedItems removeAllObjects];
-    }
-    
-}
+//-(void) saveOperatorsToArray
+//{
+//    
+//    NSMutableArray *discardedItems = [NSMutableArray array];
+//    for (NSMutableArray *rowComponents in self.arrayOfRowsElements)
+//    {
+//        for (NSString *rowComponent in rowComponents)
+//        {
+//            for (NSString *allowedKeyword in allowedOperators)
+//            {
+//                if ([rowComponent isEqualToString:allowedKeyword])
+//                {
+//                    [self.operators addObject:rowComponent];
+//                    [discardedItems addObject:rowComponent];
+//                }
+//                
+//            }
+//            
+//        }
+//        if (discardedItems.count == 1) {
+//            [rowComponents removeObject:discardedItems.firstObject];
+//        }
+//        
+//        else if (discardedItems.count > 1) {
+//            [rowComponents removeObjectsInArray:discardedItems];
+//        }
+//        
+//        [discardedItems removeAllObjects];
+//    }
+//    
+//}
 
 - (void) saveLiteralsToArray
 {
@@ -273,31 +338,31 @@
     }
 }
 
-- (void) saveVariablesToArray
-{
-    
-    NSMutableArray *discardedItems = [NSMutableArray array];
-    for (NSMutableArray *rowComponents in self.arrayOfRowsElements)
-    {
-        for (NSString *rowComponent in rowComponents)
-        {
-            if ([[rowComponent substringToIndex:1]  isEqual: @"_"])
-            {
-                [self.variables addObject:rowComponent];
-                [discardedItems addObject:rowComponent];
-            }
-            
-        }
-        if (discardedItems.count == 1) {
-            [rowComponents removeObject:discardedItems.firstObject];
-        }
-        
-        else if (discardedItems.count > 1) {
-            [rowComponents removeObjectsInArray:discardedItems];
-        }
-        
-        [discardedItems removeAllObjects];
-    }
-    
-}
+//- (void) saveVariablesToArray
+//{
+//    
+//    NSMutableArray *discardedItems = [NSMutableArray array];
+//    for (NSMutableArray *rowComponents in self.arrayOfRowsElements)
+//    {
+//        for (NSString *rowComponent in rowComponents)
+//        {
+//            if ([[rowComponent substringToIndex:1]  isEqual: @"_"])
+//            {
+//                [self.variables addObject:rowComponent];
+//                [discardedItems addObject:rowComponent];
+//            }
+//            
+//        }
+//        if (discardedItems.count == 1) {
+//            [rowComponents removeObject:discardedItems.firstObject];
+//        }
+//        
+//        else if (discardedItems.count > 1) {
+//            [rowComponents removeObjectsInArray:discardedItems];
+//        }
+//        
+//        [discardedItems removeAllObjects];
+//    }
+//    
+//}
 @end

@@ -7,16 +7,50 @@
 //
 
 #import "LexemViewController.h"
+#import "LexicalAnalyzer.h"
+#import "Lexem.h"
 
-@interface LexemViewController () <NSTableViewDataSource>
+@interface LexemViewController () <NSTableViewDataSource, NSTableViewDelegate>
 
+@property (weak) IBOutlet NSTableView *tableView;
+@property (nonatomic, strong) LexicalAnalyzer *lexicalAnalyzer;
 @end
 
 @implementation LexemViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do view setup here.
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.lexicalAnalyzer = [LexicalAnalyzer sharedInstance];
+    
 }
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return [self.lexicalAnalyzer.lexemes  count];
+}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+    
+    NSTableCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    
+    if( [tableColumn.identifier isEqualToString:@"Number"])
+    {
+            cellView.textField.stringValue = [NSString stringWithFormat:@"%ld", (long)row];
+            return cellView;
+    }
+    if( [tableColumn.identifier isEqualToString:@"Lexem"]) {
+        Lexem *lexem = [self.lexicalAnalyzer.lexemes objectAtIndex:row];
+        cellView.textField.stringValue = [NSString stringWithFormat:@"%@", lexem.identifier];
+        return cellView;
+    }
+    if( [tableColumn.identifier isEqualToString:@"Comment"]) {
+        Lexem *lexem = [self.lexicalAnalyzer.lexemes objectAtIndex:row];
+        cellView.textField.stringValue = [NSString stringWithFormat:@"%@", lexem.catagory];
+        return cellView;
+    }
+    
+    return cellView;
+}
+
 
 @end
