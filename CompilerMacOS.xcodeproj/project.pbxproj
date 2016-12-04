@@ -12,6 +12,13 @@
 		EFE1B0331DF34E600021997D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B0321DF34E600021997D /* ViewController.m */; };
 		EFE1B0351DF34E600021997D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE1B0341DF34E600021997D /* Assets.xcassets */; };
 		EFE1B0381DF34E600021997D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFE1B0361DF34E600021997D /* Main.storyboard */; };
+		EFE1B0451DF3561C0021997D /* LexemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B0441DF3561C0021997D /* LexemViewController.m */; };
+		EFE1B04A1DF357590021997D /* LexicalAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B0491DF357590021997D /* LexicalAnalyzer.m */; };
+		EFE1B04E1DF41C020021997D /* Lexem.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B04D1DF41C020021997D /* Lexem.m */; };
+		EFE1B0531DF41D0A0021997D /* Keyword.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B0521DF41D0A0021997D /* Keyword.m */; };
+		EFE1B0571DF41D6E0021997D /* Variable.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B0561DF41D6E0021997D /* Variable.m */; };
+		EFE1B05B1DF41D930021997D /* Operator.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B05A1DF41D930021997D /* Operator.m */; };
+		EFE1B05F1DF41DAE0021997D /* Symbol.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B05E1DF41DAE0021997D /* Symbol.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +31,21 @@
 		EFE1B0341DF34E600021997D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFE1B0371DF34E600021997D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EFE1B0391DF34E600021997D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EFE1B0431DF3561C0021997D /* LexemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LexemViewController.h; sourceTree = "<group>"; };
+		EFE1B0441DF3561C0021997D /* LexemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LexemViewController.m; sourceTree = "<group>"; };
+		EFE1B0481DF357590021997D /* LexicalAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LexicalAnalyzer.h; sourceTree = "<group>"; };
+		EFE1B0491DF357590021997D /* LexicalAnalyzer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LexicalAnalyzer.m; sourceTree = "<group>"; };
+		EFE1B04B1DF35BDF0021997D /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
+		EFE1B04C1DF41C020021997D /* Lexem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lexem.h; sourceTree = "<group>"; };
+		EFE1B04D1DF41C020021997D /* Lexem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Lexem.m; sourceTree = "<group>"; };
+		EFE1B0511DF41D0A0021997D /* Keyword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyword.h; sourceTree = "<group>"; };
+		EFE1B0521DF41D0A0021997D /* Keyword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keyword.m; sourceTree = "<group>"; };
+		EFE1B0551DF41D6E0021997D /* Variable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Variable.h; sourceTree = "<group>"; };
+		EFE1B0561DF41D6E0021997D /* Variable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Variable.m; sourceTree = "<group>"; };
+		EFE1B0591DF41D930021997D /* Operator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Operator.h; sourceTree = "<group>"; };
+		EFE1B05A1DF41D930021997D /* Operator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Operator.m; sourceTree = "<group>"; };
+		EFE1B05D1DF41DAE0021997D /* Symbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Symbol.h; sourceTree = "<group>"; };
+		EFE1B05E1DF41DAE0021997D /* Symbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Symbol.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,13 +78,15 @@
 		EFE1B02A1DF34E600021997D /* CompilerMacOS */ = {
 			isa = PBXGroup;
 			children = (
+				EFE1B0601DF41DB30021997D /* LexemModels */,
+				EFE1B04B1DF35BDF0021997D /* Global.h */,
+				EFE1B0471DF356320021997D /* LexemViewController */,
+				EFE1B0421DF355D10021997D /* LexicalAnalyzer */,
 				EFE1B02B1DF34E600021997D /* AppDelegate.h */,
 				EFE1B02C1DF34E600021997D /* AppDelegate.m */,
 				EFE1B0311DF34E600021997D /* ViewController.h */,
 				EFE1B0321DF34E600021997D /* ViewController.m */,
-				EFE1B0341DF34E600021997D /* Assets.xcassets */,
 				EFE1B0361DF34E600021997D /* Main.storyboard */,
-				EFE1B0391DF34E600021997D /* Info.plist */,
 				EFE1B02E1DF34E600021997D /* Supporting Files */,
 			);
 			path = CompilerMacOS;
@@ -71,9 +95,86 @@
 		EFE1B02E1DF34E600021997D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EFE1B0341DF34E600021997D /* Assets.xcassets */,
+				EFE1B0391DF34E600021997D /* Info.plist */,
 				EFE1B02F1DF34E600021997D /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EFE1B0421DF355D10021997D /* LexicalAnalyzer */ = {
+			isa = PBXGroup;
+			children = (
+				EFE1B0481DF357590021997D /* LexicalAnalyzer.h */,
+				EFE1B0491DF357590021997D /* LexicalAnalyzer.m */,
+			);
+			name = LexicalAnalyzer;
+			sourceTree = "<group>";
+		};
+		EFE1B0471DF356320021997D /* LexemViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EFE1B0431DF3561C0021997D /* LexemViewController.h */,
+				EFE1B0441DF3561C0021997D /* LexemViewController.m */,
+			);
+			name = LexemViewController;
+			sourceTree = "<group>";
+		};
+		EFE1B04F1DF41CCF0021997D /* Lexem */ = {
+			isa = PBXGroup;
+			children = (
+				EFE1B04C1DF41C020021997D /* Lexem.h */,
+				EFE1B04D1DF41C020021997D /* Lexem.m */,
+			);
+			name = Lexem;
+			sourceTree = "<group>";
+		};
+		EFE1B0501DF41CDC0021997D /* Keyword */ = {
+			isa = PBXGroup;
+			children = (
+				EFE1B0511DF41D0A0021997D /* Keyword.h */,
+				EFE1B0521DF41D0A0021997D /* Keyword.m */,
+			);
+			name = Keyword;
+			sourceTree = "<group>";
+		};
+		EFE1B0541DF41D350021997D /* Variable */ = {
+			isa = PBXGroup;
+			children = (
+				EFE1B0551DF41D6E0021997D /* Variable.h */,
+				EFE1B0561DF41D6E0021997D /* Variable.m */,
+			);
+			name = Variable;
+			sourceTree = "<group>";
+		};
+		EFE1B0581DF41D820021997D /* Operator */ = {
+			isa = PBXGroup;
+			children = (
+				EFE1B0591DF41D930021997D /* Operator.h */,
+				EFE1B05A1DF41D930021997D /* Operator.m */,
+			);
+			name = Operator;
+			sourceTree = "<group>";
+		};
+		EFE1B05C1DF41D9A0021997D /* Symbol */ = {
+			isa = PBXGroup;
+			children = (
+				EFE1B05D1DF41DAE0021997D /* Symbol.h */,
+				EFE1B05E1DF41DAE0021997D /* Symbol.m */,
+			);
+			name = Symbol;
+			sourceTree = "<group>";
+		};
+		EFE1B0601DF41DB30021997D /* LexemModels */ = {
+			isa = PBXGroup;
+			children = (
+				EFE1B0501DF41CDC0021997D /* Keyword */,
+				EFE1B0541DF41D350021997D /* Variable */,
+				EFE1B0581DF41D820021997D /* Operator */,
+				EFE1B05C1DF41D9A0021997D /* Symbol */,
+				EFE1B04F1DF41CCF0021997D /* Lexem */,
+			);
+			name = LexemModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,8 +249,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFE1B0331DF34E600021997D /* ViewController.m in Sources */,
+				EFE1B05F1DF41DAE0021997D /* Symbol.m in Sources */,
+				EFE1B04A1DF357590021997D /* LexicalAnalyzer.m in Sources */,
 				EFE1B0301DF34E600021997D /* main.m in Sources */,
+				EFE1B0571DF41D6E0021997D /* Variable.m in Sources */,
+				EFE1B04E1DF41C020021997D /* Lexem.m in Sources */,
+				EFE1B0451DF3561C0021997D /* LexemViewController.m in Sources */,
 				EFE1B02D1DF34E600021997D /* AppDelegate.m in Sources */,
+				EFE1B05B1DF41D930021997D /* Operator.m in Sources */,
+				EFE1B0531DF41D0A0021997D /* Keyword.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +407,7 @@
 				EFE1B03E1DF34E600021997D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

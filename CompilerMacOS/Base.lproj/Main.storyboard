@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11134"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -653,7 +655,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider=""/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
@@ -662,10 +664,10 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="Compiler" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <rect key="contentRect" x="196" y="240" width="480" height="413"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                     </window>
                     <connections>
@@ -674,20 +676,117 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="250"/>
+            <point key="canvasLocation" x="75" y="321.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="450"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q6y-N6-ZUy">
+                                <rect key="frame" x="20" y="49" width="440" height="381"/>
+                                <clipView key="contentView" id="QJM-Rt-DjQ">
+                                    <rect key="frame" x="1" y="1" width="423" height="379"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="HfV-ue-P0b">
+                                            <rect key="frame" x="0.0" y="0.0" width="423" height="379"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <size key="minSize" width="423" height="379"/>
+                                            <size key="maxSize" width="463" height="10000000"/>
+                                            <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="FEM-9M-Mrj">
+                                    <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="LrM-Z7-NHg">
+                                    <rect key="frame" x="424" y="1" width="15" height="379"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3Se-CY-3RG">
+                                <rect key="frame" x="14" y="13" width="134" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="122" id="dEc-k5-pxk"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Lexical analysis" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aCw-HS-c6A">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="lexicalAnalysisAction:" target="XfG-lQ-9wD" id="YEw-B8-hzB"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RO8-mB-q8F">
+                                <rect key="frame" x="148" y="13" width="137" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="125" id="bcu-yC-Xci"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Syntactic analysis" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hCl-8L-PJC">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="syntacticAnalysisAction:" target="XfG-lQ-9wD" id="Rhh-Ad-xsE"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DBg-9O-Kju">
+                                <rect key="frame" x="285" y="13" width="115" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="103" id="AXT-lW-Qij"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Lexem table" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Y3R-ep-lMF">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <segue destination="FGE-sl-8ky" kind="show" id="poR-BG-ixX"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="q6y-N6-ZUy" secondAttribute="trailing" constant="20" id="2El-YJ-ui4"/>
+                            <constraint firstItem="RO8-mB-q8F" firstAttribute="top" secondItem="q6y-N6-ZUy" secondAttribute="bottom" constant="8" id="5Tm-g8-afO"/>
+                            <constraint firstItem="q6y-N6-ZUy" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="Fdq-Yi-4AQ"/>
+                            <constraint firstItem="RO8-mB-q8F" firstAttribute="leading" secondItem="3Se-CY-3RG" secondAttribute="trailing" constant="12" id="J76-fJ-jPv"/>
+                            <constraint firstAttribute="bottom" secondItem="RO8-mB-q8F" secondAttribute="bottom" constant="20" id="K6r-0X-WrX"/>
+                            <constraint firstAttribute="bottom" secondItem="DBg-9O-Kju" secondAttribute="bottom" constant="20" id="Qkh-uv-i1I"/>
+                            <constraint firstItem="q6y-N6-ZUy" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="Y6B-qW-YQo"/>
+                            <constraint firstItem="3Se-CY-3RG" firstAttribute="top" secondItem="q6y-N6-ZUy" secondAttribute="bottom" constant="8" id="Z2e-aK-oHn"/>
+                            <constraint firstAttribute="bottom" secondItem="3Se-CY-3RG" secondAttribute="bottom" constant="20" id="b8w-3p-RXs"/>
+                            <constraint firstItem="DBg-9O-Kju" firstAttribute="leading" secondItem="RO8-mB-q8F" secondAttribute="trailing" constant="12" id="hY3-yy-oOi"/>
+                            <constraint firstItem="3Se-CY-3RG" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="p6S-fs-5hV"/>
+                            <constraint firstItem="DBg-9O-Kju" firstAttribute="top" secondItem="q6y-N6-ZUy" secondAttribute="bottom" constant="8" id="qoS-6E-Kku"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="textView" destination="HfV-ue-P0b" id="2Wc-YV-Xk0"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="75" y="957"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Btk-hr-Igx">
+            <objects>
+                <viewController id="FGE-sl-8ky" sceneMemberID="viewController">
+                    <view key="view" id="pFU-rv-YFC">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="450"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="oV8-Fy-NlP" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="772" y="957"/>
         </scene>
     </scenes>
 </document>
