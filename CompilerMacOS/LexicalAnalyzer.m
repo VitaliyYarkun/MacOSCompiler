@@ -12,11 +12,13 @@
 #import "Variable.h"
 #import "Operator.h"
 #import "Symbol.h"
+#import "Literal.h"
 
 @interface LexicalAnalyzer ()
 
 @property (strong, nonatomic) NSString* programCode;
 @property (strong, nonatomic) NSMutableArray *arrayOfRowsElements;
+@property (strong, nonatomic) NSMutableArray *incorrectElements;
 
 @end
 
@@ -39,15 +41,21 @@
     self.arrayOfRowsElements = [[NSMutableArray alloc]  init];
     self.keywords = [[NSMutableArray alloc] init];
     self.operators = [[NSMutableArray alloc] init];
-    self.variables = [[NSMutableArray alloc] init];
+    self.bodyDataVariables = [[NSMutableArray alloc] init];
+    self.codeDataVariables = [[NSMutableArray alloc] init];
     self.symbols = [[NSMutableArray alloc] init];
     self.lexemes = [[NSMutableArray alloc] init];
+    self.literals = [[NSMutableArray alloc] init];
+    self.incorrectElements = [[NSMutableArray alloc] init];
+
     self.programCode = code;
     
     [self saveSeperateWords];
+    [self deleteSpaceElements];
     [self saveKeywordsToArray];
+    
     //[self saveOperatorsToArray];
-    [self saveLiteralsToArray];
+    //[self saveLiteralsToArray];
     //[self saveVariablesToArray];
     
 }
@@ -83,11 +91,25 @@
 //    }
     
     for (NSString* row in rows) {
-        NSArray *rowItems = [row componentsSeparatedByString:@" "];
+        NSArray *elements = [row componentsSeparatedByString:@" "];
+        NSMutableArray *rowItems = [[NSMutableArray alloc] initWithArray:elements];
         NSMutableArray *mutableRowComponents = [[NSMutableArray alloc] initWithArray:rowItems];
         [self.arrayOfRowsElements addObject:mutableRowComponents];
     }
     
+}
+
+-(void) deleteSpaceElements {
+    NSMutableArray *elementsToDelete = [[NSMutableArray alloc] init];
+    for (NSMutableArray *elements in self.arrayOfRowsElements) {
+        for (NSString *element in elements) {
+            if ([element isEqualToString:@""])
+                [elementsToDelete addObject:element];
+        }
+    }
+    for (NSMutableArray *elements in self.arrayOfRowsElements) {
+        [elements removeObjectsInArray:elementsToDelete];
+    }
 }
 
 -(void) saveKeywordsToArray
@@ -126,6 +148,12 @@
 -(void) checkForAllowedKeywords:(NSMutableArray *) rowComponents {
     NSString *previousElement = @"";
     for (NSInteger i = 0; i < [rowComponents count]; i++) {
+        BOOL isAdded = NO;
+        if (i==0) {
+            if (![[rowComponents objectAtIndex:i] isEqualToString:@"Name"]) {
+                #warning implement error
+            }
+        }
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Name"]) {
             Keyword *keyword = [[Keyword alloc] init];
             keyword.catagory = @"Keyword";
@@ -140,9 +168,9 @@
             variable.type = previousElement;
             variable.identifier = [rowComponents objectAtIndex:i+1];
             variable.value = @"";
-            [self.variables addObject:variable];
             [self.lexemes addObject:variable];
             i++;
+            isAdded = YES;
         }
 
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"BodyData"]) {
@@ -153,6 +181,7 @@
             keyword.value = @"";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
+            isAdded = YES;
 
         }
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"{"]) {
@@ -163,56 +192,66 @@
             symbol.value = @"";
             [self.symbols addObject:symbol];
             [self.lexemes addObject:symbol];
-
+            isAdded = YES;
         }
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Int16_t"]) {
-            BOOL checkIfCorrect = NO;
-            if ([[[rowComponents objectAtIndex:i+1] substringToIndex:1] isEqualToString:@"_"]) {
-                checkIfCorrect = YES;
-            }
-            else {
-                checkIfCorrect = NO;
-                #warning - Implement error of input
-            }
+//            BOOL checkIfCorrect = NO;
+//            if ([[[rowComponents objectAtIndex:i+1] substringToIndex:1] isEqualToString:@"_"]) {
+//                checkIfCorrect = YES;
+//            }
+//            else {
+//                checkIfCorrect = NO;
+//                #warning - Implement error of input
+//            }
+//            
+//            if ([[rowComponents objectAtIndex:i+2] isEqualToString:@":="]) {
+//                checkIfCorrect = YES;
+//            }
+//            else {
+//                checkIfCorrect = NO;
+//                #warning - Implement error of input
+//            }
+//            
+//            if (checkIfCorrect) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"Int16_t";
+            keyword.identifier = @"Int16_t";
+            keyword.value = @"";
+            previousElement = @"Int16_t";
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+
             
-            if ([[rowComponents objectAtIndex:i+2] isEqualToString:@":="]) {
-                checkIfCorrect = YES;
-            }
-            else {
-                checkIfCorrect = NO;
-                #warning - Implement error of input
-            }
+            Variable *variable = [[Variable alloc] init];
+            variable.catagory = @"Variable";
+            variable.type = @"Int16_t";
+            variable.identifier = [rowComponents objectAtIndex:i+1];
+            variable.value = [rowComponents objectAtIndex:i+3];
+            [self.bodyDataVariables addObject:variable];
+            [self.lexemes addObject:variable];
+
             
-            if (checkIfCorrect) {
-                Keyword *keyword = [[Keyword alloc] init];
-                keyword.catagory = @"Keyword";
-                keyword.type = @"Int16_t";
-                keyword.identifier = @"Int16_t";
-                keyword.value = @"";
-                previousElement = @"Int16_t";
-                [self.keywords addObject:keyword];
-                [self.lexemes addObject:keyword];
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Assignment";
+            operator.identifier = @":=";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            
+            Literal *literal = [[Literal alloc] init];
+            literal.catagory = @"Literal";
+            literal.type = @"Int16_t";
+            literal.identifier = [rowComponents objectAtIndex:i];
+            literal.value = [rowComponents objectAtIndex:i];
 
-                
-                Variable *variable = [[Variable alloc] init];
-                variable.catagory = @"Variable";
-                variable.type = @"Int16_t";
-                variable.identifier = [rowComponents objectAtIndex:i+1];
-                variable.value = [rowComponents objectAtIndex:i+3];
-                [self.variables addObject:variable];
-                [self.lexemes addObject:variable];
+            [self.literals addObject:literal];
+            [self.lexemes addObject:literal];
 
-                
-                Operator *operator = [[Operator alloc] init];
-                operator.catagory = @"Operator";
-                operator.type = @"Assignment";
-                operator.identifier = @":=";
-                operator.value = @"";
-                [self.operators addObject:operator];
-                [self.lexemes addObject:operator];
 
-                i += 3;
-            }
+            i += 3;
+            isAdded = YES;
         }
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"}"]) {
             Symbol *symbol = [[Symbol alloc] init];
@@ -222,7 +261,7 @@
             symbol.value = @"";
             [self.symbols addObject:symbol];
             [self.lexemes addObject:symbol];
-
+            isAdded = YES;
         }
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Repeat"]) {
             Keyword *keyword = [[Keyword alloc] init];
@@ -232,7 +271,7 @@
             keyword.value = @"";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
-
+            isAdded = YES;
         }
         if ([[rowComponents objectAtIndex:i]  isEqual: @"++"]) {
             Operator *operator = [[Operator alloc] init];
@@ -241,18 +280,18 @@
             operator.identifier = @"++";
             operator.value = @"";
             [self.operators addObject:operator];
-            [self.keywords addObject:operator];
-
+            [self.lexemes addObject:operator];
+            isAdded = YES;
         }
-        if ([[rowComponents objectAtIndex:i]  isEqual: @"--"]) {
+        if ([[rowComponents objectAtIndex:i]  isEqualToString: @"-"]) {
             Operator *operator = [[Operator alloc] init];
             operator.catagory = @"Operator";
             operator.type = @"Math";
             operator.identifier = @"--";
             operator.value = @"";
             [self.operators addObject:operator];
-            [self.keywords addObject:operator];
-
+            [self.lexemes addObject:operator];
+            isAdded = YES;
         }
         
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Until"]) {
@@ -263,70 +302,178 @@
             keyword.value = @"";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
+            isAdded = YES;
         }
         
-    }
-}
-
-//-(void) saveOperatorsToArray
-//{
-//    
-//    NSMutableArray *discardedItems = [NSMutableArray array];
-//    for (NSMutableArray *rowComponents in self.arrayOfRowsElements)
-//    {
-//        for (NSString *rowComponent in rowComponents)
-//        {
-//            for (NSString *allowedKeyword in allowedOperators)
-//            {
-//                if ([rowComponent isEqualToString:allowedKeyword])
-//                {
-//                    [self.operators addObject:rowComponent];
-//                    [discardedItems addObject:rowComponent];
-//                }
-//                
-//            }
-//            
-//        }
-//        if (discardedItems.count == 1) {
-//            [rowComponents removeObject:discardedItems.firstObject];
-//        }
-//        
-//        else if (discardedItems.count > 1) {
-//            [rowComponents removeObjectsInArray:discardedItems];
-//        }
-//        
-//        [discardedItems removeAllObjects];
-//    }
-//    
-//}
-
-- (void) saveLiteralsToArray
-{
-    self.literals = [NSMutableArray array];
-    NSMutableArray *discardedItems = [NSMutableArray array];
-    for (NSMutableArray *rowComponents in self.arrayOfRowsElements)
-    {
-        for (NSString *rowComponent in rowComponents)
-        {
-            if ([self isInteger:rowComponent])
-            {
-                [self.literals addObject:rowComponent];
-                [discardedItems addObject:rowComponent];
-            }
+        if ([[[rowComponents objectAtIndex:i] substringToIndex:1] isEqual:@"_"]) {
+            Variable *variable = [[Variable alloc] init];
+            variable.catagory = @"Variable";
+            variable.type = @"Int16_t";
+            variable.identifier = [rowComponents objectAtIndex:i];
+            variable.value = @"";
+            [self.codeDataVariables addObject:variable];
+            //[self.lexemes addObject:variable];
+            isAdded = YES;
+        }
+        
+        if ([self isInteger:[rowComponents objectAtIndex:i]]) {
+            Literal *literal = [[Literal alloc] init];
+            literal.catagory = @"Literal";
+            literal.type = @"Int16_t";
+            literal.identifier = [rowComponents objectAtIndex:i];
+            literal.value = [rowComponents objectAtIndex:i];
+            
+            [self.literals addObject:literal];
+            [self.lexemes addObject:literal];
+            isAdded = YES;
+        }
+        
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"End"]) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"Block end";
+            keyword.identifier = @"End";
+            keyword.value = @"";
+            
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+            isAdded = YES;
+        }
+        
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"Read"]) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"I/O function";
+            keyword.identifier = @"Read";
+            keyword.value = @"";
+            
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"Write"]) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"I/O function";
+            keyword.identifier = @"Write";
+            keyword.value = @"";
+            
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"**"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Math";
+            operator.identifier = @"**";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
             
         }
-        if (discardedItems.count == 1) {
-            [rowComponents removeObject:discardedItems.firstObject];
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"Div"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Math";
+            operator.identifier = @"Div";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+            
         }
-        
-        else if (discardedItems.count > 1) {
-            [rowComponents removeObjectsInArray:discardedItems];
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"Mod"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Math";
+            operator.identifier = @"Div";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+            
         }
-        
-        [discardedItems removeAllObjects];
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"="]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Compare operator";
+            operator.identifier = @"=";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"<>"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Compare operator";
+            operator.identifier = @"<>";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"Lt"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Compare operator";
+            operator.identifier = @"Lt";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"Et"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Compare operator";
+            operator.identifier = @"Et";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"!"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Boolean operator";
+            operator.identifier = @"!";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"&"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Boolean operator";
+            operator.identifier = @"&";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i]  isEqual: @"|"]) {
+            Operator *operator = [[Operator alloc] init];
+            operator.catagory = @"Operator";
+            operator.type = @"Boolean operator";
+            operator.identifier = @"|";
+            operator.value = @"";
+            [self.operators addObject:operator];
+            [self.lexemes addObject:operator];
+            isAdded = YES;
+        }
+        if (!isAdded) {
+            Keyword *incorrectKeyword = [[Keyword alloc] init];
+            incorrectKeyword.identifier = [rowComponents objectAtIndex:i];
+            incorrectKeyword.error = @"Unrecognized user input";
+            [self.incorrectElements addObject:incorrectKeyword];
+        }
     }
-    
 }
+
 
 - (BOOL)isInteger:(NSString *)toCheck {
     if([toCheck intValue] != 0) {
@@ -338,31 +485,30 @@
     }
 }
 
-//- (void) saveVariablesToArray
-//{
-//    
-//    NSMutableArray *discardedItems = [NSMutableArray array];
-//    for (NSMutableArray *rowComponents in self.arrayOfRowsElements)
-//    {
-//        for (NSString *rowComponent in rowComponents)
-//        {
-//            if ([[rowComponent substringToIndex:1]  isEqual: @"_"])
-//            {
-//                [self.variables addObject:rowComponent];
-//                [discardedItems addObject:rowComponent];
-//            }
-//            
-//        }
-//        if (discardedItems.count == 1) {
-//            [rowComponents removeObject:discardedItems.firstObject];
-//        }
-//        
-//        else if (discardedItems.count > 1) {
-//            [rowComponents removeObjectsInArray:discardedItems];
-//        }
-//        
-//        [discardedItems removeAllObjects];
-//    }
-//    
-//}
+-(void) analyzeVariables {
+    for (Variable *variable in self.bodyDataVariables) {
+        if (![[variable.identifier substringToIndex:1] isEqualToString:@"_"]) {
+            variable.error = @"Incorrect variable name declaration";
+            [self.incorrectElements addObject:variable];
+        }
+    }
+    for (Variable *codeVariable in self.codeDataVariables) {
+        for (Variable *bodyVariable in self.bodyDataVariables) {
+            if (![codeVariable.identifier isEqualToString:bodyVariable.identifier]) {
+                codeVariable.error = @"Variable is not declared in BodyData block";
+                [self.incorrectElements addObject:codeVariable];
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
 @end

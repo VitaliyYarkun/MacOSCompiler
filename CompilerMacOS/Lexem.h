@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) NSString *value;
+@property (nonatomic, strong) NSString *error;
 
 @end

@@ -22,6 +22,7 @@
     [super viewDidLoad];
     self.lexicalAnalyzer = [LexicalAnalyzer sharedInstance];
     self.textView.textColor = [NSColor blackColor];
+    self.textView.automaticSpellingCorrectionEnabled = NO;
 }
 
 

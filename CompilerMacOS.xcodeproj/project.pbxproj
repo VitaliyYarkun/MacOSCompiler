@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF69A1381DF73E5B0063F341 /* Literal.m in Sources */ = {isa = PBXBuildFile; fileRef = EF69A1371DF73E5B0063F341 /* Literal.m */; };
+		EF69A13C1DF75B030063F341 /* SyntacticAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = EF69A13B1DF75B030063F341 /* SyntacticAnalyzer.m */; };
+		EF69A1401DF75C980063F341 /* OperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF69A13F1DF75C980063F341 /* OperationManager.m */; };
 		EFE1B02D1DF34E600021997D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B02C1DF34E600021997D /* AppDelegate.m */; };
 		EFE1B0301DF34E600021997D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B02F1DF34E600021997D /* main.m */; };
 		EFE1B0331DF34E600021997D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE1B0321DF34E600021997D /* ViewController.m */; };
@@ -22,6 +25,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EF69A1361DF73E5B0063F341 /* Literal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Literal.h; sourceTree = "<group>"; };
+		EF69A1371DF73E5B0063F341 /* Literal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Literal.m; sourceTree = "<group>"; };
+		EF69A13A1DF75B030063F341 /* SyntacticAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyntacticAnalyzer.h; sourceTree = "<group>"; };
+		EF69A13B1DF75B030063F341 /* SyntacticAnalyzer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyntacticAnalyzer.m; sourceTree = "<group>"; };
+		EF69A13E1DF75C980063F341 /* OperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationManager.h; sourceTree = "<group>"; };
+		EF69A13F1DF75C980063F341 /* OperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationManager.m; sourceTree = "<group>"; };
 		EFE1B0281DF34E600021997D /* CompilerMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CompilerMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE1B02B1DF34E600021997D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EFE1B02C1DF34E600021997D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -59,6 +68,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EF69A1391DF73E670063F341 /* Literal */ = {
+			isa = PBXGroup;
+			children = (
+				EF69A1361DF73E5B0063F341 /* Literal.h */,
+				EF69A1371DF73E5B0063F341 /* Literal.m */,
+			);
+			name = Literal;
+			sourceTree = "<group>";
+		};
+		EF69A13D1DF75B080063F341 /* SyntecticAnalyzer */ = {
+			isa = PBXGroup;
+			children = (
+				EF69A13A1DF75B030063F341 /* SyntacticAnalyzer.h */,
+				EF69A13B1DF75B030063F341 /* SyntacticAnalyzer.m */,
+			);
+			name = SyntecticAnalyzer;
+			sourceTree = "<group>";
+		};
+		EF69A1411DF75C9C0063F341 /* OperationManager */ = {
+			isa = PBXGroup;
+			children = (
+				EF69A13E1DF75C980063F341 /* OperationManager.h */,
+				EF69A13F1DF75C980063F341 /* OperationManager.m */,
+			);
+			name = OperationManager;
+			sourceTree = "<group>";
+		};
 		EFE1B01F1DF34E600021997D = {
 			isa = PBXGroup;
 			children = (
@@ -78,10 +114,12 @@
 		EFE1B02A1DF34E600021997D /* CompilerMacOS */ = {
 			isa = PBXGroup;
 			children = (
-				EFE1B0601DF41DB30021997D /* LexemModels */,
 				EFE1B04B1DF35BDF0021997D /* Global.h */,
+				EFE1B0601DF41DB30021997D /* LexemModels */,
 				EFE1B0471DF356320021997D /* LexemViewController */,
 				EFE1B0421DF355D10021997D /* LexicalAnalyzer */,
+				EF69A13D1DF75B080063F341 /* SyntecticAnalyzer */,
+				EF69A1411DF75C9C0063F341 /* OperationManager */,
 				EFE1B02B1DF34E600021997D /* AppDelegate.h */,
 				EFE1B02C1DF34E600021997D /* AppDelegate.m */,
 				EFE1B0311DF34E600021997D /* ViewController.h */,
@@ -168,6 +206,7 @@
 		EFE1B0601DF41DB30021997D /* LexemModels */ = {
 			isa = PBXGroup;
 			children = (
+				EF69A1391DF73E670063F341 /* Literal */,
 				EFE1B0501DF41CDC0021997D /* Keyword */,
 				EFE1B0541DF41D350021997D /* Variable */,
 				EFE1B0581DF41D820021997D /* Operator */,
@@ -251,8 +290,11 @@
 				EFE1B0331DF34E600021997D /* ViewController.m in Sources */,
 				EFE1B05F1DF41DAE0021997D /* Symbol.m in Sources */,
 				EFE1B04A1DF357590021997D /* LexicalAnalyzer.m in Sources */,
+				EF69A1381DF73E5B0063F341 /* Literal.m in Sources */,
+				EF69A1401DF75C980063F341 /* OperationManager.m in Sources */,
 				EFE1B0301DF34E600021997D /* main.m in Sources */,
 				EFE1B0571DF41D6E0021997D /* Variable.m in Sources */,
+				EF69A13C1DF75B030063F341 /* SyntacticAnalyzer.m in Sources */,
 				EFE1B04E1DF41C020021997D /* Lexem.m in Sources */,
 				EFE1B0451DF3561C0021997D /* LexemViewController.m in Sources */,
 				EFE1B02D1DF34E600021997D /* AppDelegate.m in Sources */,

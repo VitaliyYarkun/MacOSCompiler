@@ -11,7 +11,8 @@
 @interface LexicalAnalyzer : NSObject
 
 @property (strong, nonatomic) NSMutableArray *literals;
-@property (strong, nonatomic) NSMutableArray *variables;
+@property (strong, nonatomic) NSMutableArray *bodyDataVariables;
+@property (strong, nonatomic) NSMutableArray *codeDataVariables;
 @property (strong, nonatomic) NSMutableArray *keywords;
 @property (strong, nonatomic) NSMutableArray *symbols;
 @property (strong, nonatomic) NSMutableArray *lexemes;
