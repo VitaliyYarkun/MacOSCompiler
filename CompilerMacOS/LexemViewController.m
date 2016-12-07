@@ -23,10 +23,15 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.lexicalAnalyzer = [LexicalAnalyzer sharedInstance];
-    
+    [self.tableView reloadData];
 }
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     return [self.lexicalAnalyzer.lexemes  count];
+}
+
+-(void) viewWillAppear {
+    [super viewWillAppear];
+    [self.tableView reloadData];
 }
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {

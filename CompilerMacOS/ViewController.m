@@ -35,6 +35,7 @@
 - (IBAction)lexicalAnalysisAction:(NSButton *)sender {
     [self.lexicalAnalyzer scanCode:[self.textView string]];
 }
+
 - (IBAction)syntacticAnalysisAction:(NSButton *)sender {
     
 }

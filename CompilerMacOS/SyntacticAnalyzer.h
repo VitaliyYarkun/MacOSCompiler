@@ -11,6 +11,6 @@
 @interface SyntacticAnalyzer : NSObject
 
 + (instancetype)sharedInstance;
--(void) analyzeCodeData:(NSString *) code;
+-(void) analyzeCodeData;
 
 @end

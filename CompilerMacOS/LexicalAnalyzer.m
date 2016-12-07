@@ -17,7 +17,6 @@
 @interface LexicalAnalyzer ()
 
 @property (strong, nonatomic) NSString* programCode;
-@property (strong, nonatomic) NSMutableArray *arrayOfRowsElements;
 @property (strong, nonatomic) NSMutableArray *incorrectElements;
 
 @end
@@ -51,7 +50,6 @@
     self.programCode = code;
     
     [self saveSeperateWords];
-    [self deleteSpaceElements];
     [self saveKeywordsToArray];
     
     //[self saveOperatorsToArray];
@@ -96,6 +94,7 @@
         NSMutableArray *mutableRowComponents = [[NSMutableArray alloc] initWithArray:rowItems];
         [self.arrayOfRowsElements addObject:mutableRowComponents];
     }
+    [self deleteSpaceElements];
     
 }
 
@@ -184,16 +183,7 @@
             isAdded = YES;
 
         }
-        if ([[rowComponents objectAtIndex:i] isEqualToString:@"{"]) {
-            Symbol *symbol = [[Symbol alloc] init];
-            symbol.catagory = @"Symbol";
-            symbol.type = @"OpenBlock";
-            symbol.identifier = @"{";
-            symbol.value = @"";
-            [self.symbols addObject:symbol];
-            [self.lexemes addObject:symbol];
-            isAdded = YES;
-        }
+        
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Int16_t"]) {
 //            BOOL checkIfCorrect = NO;
 //            if ([[[rowComponents objectAtIndex:i+1] substringToIndex:1] isEqualToString:@"_"]) {
@@ -253,16 +243,7 @@
             i += 3;
             isAdded = YES;
         }
-        if ([[rowComponents objectAtIndex:i] isEqualToString:@"}"]) {
-            Symbol *symbol = [[Symbol alloc] init];
-            symbol.catagory = @"Symbol";
-            symbol.type = @"CloseBlock";
-            symbol.identifier = @"}";
-            symbol.value = @"";
-            [self.symbols addObject:symbol];
-            [self.lexemes addObject:symbol];
-            isAdded = YES;
-        }
+        
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Repeat"]) {
             Keyword *keyword = [[Keyword alloc] init];
             keyword.catagory = @"Keyword";
