@@ -43,14 +43,15 @@
                 codeDataDetected = YES;
             if ([element isEqualToString:@"End"])
                 codeDataDetected = NO;
-            if (codeDataDetected)
+            if (codeDataDetected) {
                 [self.codeDataElements addObject:rowElements];
+                break;
+            }
             
         }
     }
 }
 -(void) analyzeCodeData{
-    self.resultVariablesArray = [[NSMutableArray alloc] init];
     self.oparationManager = [OperationManager sharedInstance];
     NSMutableArray *loopStack = [[NSMutableArray alloc] init];
     [self sortCodeDataContent];
@@ -67,13 +68,13 @@
             if ([[lexem substringToIndex:1] isEqualToString:@"_"]) {
                 Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:lexem];
                 
-                for (NSInteger k = 2; k < [[self.codeDataElements objectAtIndex:i] count] - 2; k++) {
+                for (NSInteger k = 2; k < [[self.codeDataElements objectAtIndex:i] count] - 1; k++) {
                     NSString *objectAtIndexK = [[self.codeDataElements objectAtIndex:i] objectAtIndex:k];
-                    
+                    NSLog(@"%lu",(unsigned long)[[self.codeDataElements objectAtIndex:i] count]);
                     if ([self isInteger:objectAtIndexK] && k==2) {
                         firstLexem.resultValue = objectAtIndexK;
                     }
-                    else if ([objectAtIndexK isEqualToString:@"_"] && k==2){
+                    else if ([[objectAtIndexK substringToIndex:1] isEqualToString:@"_"] && k==2){
                         Lexem *anotherLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexK];
                         firstLexem.resultValue = anotherLexem.resultValue;
                     }
@@ -104,7 +105,7 @@
                     }
                     
                 }
-                [self.resultVariablesArray addObject:firstLexem];
+                break;
             }
             
             if ([lexem isEqualToString:@"Until"]) {

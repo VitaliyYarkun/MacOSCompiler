@@ -44,8 +44,8 @@
 - (IBAction)syntacticAnalysisAction:(NSButton *)sender {
     [self.syntacticAnalyzer analyzeCodeData];
     NSMutableString *resultString = [[NSMutableString alloc] init];
-    for (Lexem *lexem in self.syntacticAnalyzer.resultVariablesArray) {
-        [resultString appendFormat:@"%@ = %@", lexem.identifier, lexem.resultValue];
+    for (Lexem *lexem in self.lexicalAnalyzer.bodyDataVariables) {
+        [resultString appendFormat:@"%@ = %@\n", lexem.identifier, lexem.resultValue];
     }
     [self.consoleView setString:resultString];
     
