@@ -20,23 +20,43 @@
     
     return sharedInstance;
 }
--(NSInteger) addOperandOne:(NSInteger) firstOperand toOperandTwo:(NSInteger) secondOperand{
-    return firstOperand + secondOperand;
+-(NSString *) addOperandOne:(NSString *) firstOperand toOperandTwo:(NSString *) secondOperand{
+    NSInteger first = [firstOperand integerValue];
+    NSInteger second = [secondOperand integerValue];
+    NSInteger result = first + second;
+    NSString *stringToReturn = [NSString stringWithFormat:@"%ld", (long)result];
+    return stringToReturn;
 }
 
--(NSInteger) subtractOperandOne:(NSInteger) firstOperand fromOperandTwo:(NSInteger) secondOperand{
-    return secondOperand - firstOperand;
+-(NSString *) subtractOperandOne:(NSString *) firstOperand fromOperandTwo:(NSString *) secondOperand{
+    NSInteger first = [firstOperand integerValue];
+    NSInteger second = [secondOperand integerValue];
+    NSInteger result = second - first;
+    NSString *stringToReturn = [NSString stringWithFormat:@"%ld", (long)result];
+    return stringToReturn;
 }
 
--(NSInteger) multiplyOperandOne:(NSInteger) firstOperand byOperandTwo:(NSInteger) secondOperand{
-    return firstOperand * secondOperand;
+-(NSString *) multiplyOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand{
+    NSInteger first = [firstOperand integerValue];
+    NSInteger second = [secondOperand integerValue];
+    NSInteger result = first * second;
+    NSString *stringToReturn = [NSString stringWithFormat:@"%ld", (long)result];
+    return stringToReturn;
 }
--(NSInteger) divideOperandOne:(NSInteger) firstOperand byOperandTwo:(NSInteger) secondOperand {
-    return firstOperand / secondOperand;
+-(NSString *) divideOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand {
+    NSInteger first = [firstOperand integerValue];
+    NSInteger second = [secondOperand integerValue];
+    NSInteger result = first / second;
+    NSString *stringToReturn = [NSString stringWithFormat:@"%ld", (long)result];
+    return stringToReturn;;
 }
 
--(NSInteger) modOperandOne:(NSInteger) firstOperand byOperandTwo:(NSInteger) secondOperand{
-    return firstOperand % secondOperand;
+-(NSString *) modOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand{
+    NSInteger first = [firstOperand integerValue];
+    NSInteger second = [secondOperand integerValue];
+    NSInteger result = first % second;
+    NSString *stringToReturn = [NSString stringWithFormat:@"%ld", (long)result];
+    return stringToReturn;
 }
 
 -(BOOL) checkIfOperandOne:(NSInteger) firstOperand isEqualToOperandTwo:(NSInteger) secondOperand{

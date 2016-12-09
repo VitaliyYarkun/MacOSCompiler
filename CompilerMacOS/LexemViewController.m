@@ -50,7 +50,7 @@
     }
     if( [tableColumn.identifier isEqualToString:@"Comment"]) {
         Lexem *lexem = [self.lexicalAnalyzer.lexemes objectAtIndex:row];
-        cellView.textField.stringValue = [NSString stringWithFormat:@"Catagory = %@, type = %@, value = %@, error = %@", lexem.catagory, lexem.type, lexem.value, lexem.error];
+        cellView.textField.stringValue = [NSString stringWithFormat:@"Catagory = %@, type = %@, value = %@, error = %@", lexem.catagory, lexem.type, lexem.resultValue, lexem.error];
         return cellView;
     }
     

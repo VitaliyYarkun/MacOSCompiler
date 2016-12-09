@@ -73,9 +73,29 @@
             }
             
             if ([[lexem substringToIndex:1] isEqualToString:@"_"]) {
-//                if () {
-//                    <#statements#>
-//                }
+                Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:lexem];
+                
+                for (NSInteger k = 2; k < [[self.codeDataElements objectAtIndex:i] count] - 2; k++) {
+                    NSString *objectAtIndexK = [[self.codeDataElements objectAtIndex:i] objectAtIndex:k];
+                    
+                    if ([self isInteger:objectAtIndexK] && k==2) {
+                        firstLexem.resultValue = objectAtIndexK;
+                    }
+                    else if ([objectAtIndexK isEqualToString:@"_"] && k==2){
+                        Lexem *anotherLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexK];
+                        firstLexem.resultValue = anotherLexem.resultValue;
+                    }
+                    else {
+                        NSString *objectAtIndexKPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:k+1];
+                        if ([objectAtIndexK isEqualToString:@"++"] && [[objectAtIndexKPlusOne substringToIndex:1] isEqualToString:@"_"])
+                        {
+                            Lexem *anotherLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexKPlusOne];
+                            firstLexem.resultValue = [self.oparationManager addOperandOne:firstLexem.resultValue toOperandTwo:anotherLexem.resultValue];
+                            k++;
+                        }
+                    }
+                    
+                }
             }
             
             if ([lexem isEqualToString:@"Until"]) {
@@ -85,6 +105,25 @@
         }
 
     }
+}
+
+- (BOOL)isInteger:(NSString *)toCheck {
+    if([toCheck intValue] != 0) {
+        return true;
+    } else if([toCheck isEqualToString:@"0"]) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+-(Lexem *) findLexemInBodyDataByIdentidier:(NSString *) identifier {
+    for (Lexem *lexemObj in self.lexicalAnalyzer.bodyDataVariables) {
+        if ([lexemObj.identifier isEqualToString:identifier]) {
+            return lexemObj;
+        }
+    }
+    return nil;
 }
 
 @end

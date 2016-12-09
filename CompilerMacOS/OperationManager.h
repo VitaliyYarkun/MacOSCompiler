@@ -11,11 +11,11 @@
 @interface OperationManager : NSObject
 
 + (instancetype)sharedInstance;
--(NSInteger) addOperandOne:(NSInteger) firstOperand toOperandTwo:(NSInteger) secondOperand;
--(NSInteger) subtractOperandOne:(NSInteger) firstOperand fromOperandTwo:(NSInteger) secondOperand;
--(NSInteger) multiplyOperandOne:(NSInteger) firstOperand byOperandTwo:(NSInteger) secondOperand;
--(NSInteger) divideOperandOne:(NSInteger) firstOperand byOperandTwo:(NSInteger) secondOperand;
--(NSInteger) modOperandOne:(NSInteger) firstOperand byOperandTwo:(NSInteger) secondOperand;
+-(NSString *) addOperandOne:(NSString *) firstOperand toOperandTwo:(NSString *) secondOperand;
+-(NSString *) subtractOperandOne:(NSString *) firstOperand fromOperandTwo:(NSString *) secondOperand;
+-(NSString *) multiplyOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand;
+-(NSString *) divideOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand;
+-(NSString *) modOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand;
 
 -(BOOL) checkIfOperandOne:(NSInteger) firstOperand isEqualToOperandTwo:(NSInteger) secondOperand;
 -(BOOL) checkIfOperandOne:(NSInteger) firstOperand isNotEqualToOperandTwo:(NSInteger) secondOperand;
