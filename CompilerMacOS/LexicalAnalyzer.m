@@ -51,6 +51,7 @@
     
     [self saveSeperateWords];
     [self saveKeywordsToArray];
+    [self analyzeVariables];
     
     //[self saveOperatorsToArray];
     //[self saveLiteralsToArray];
@@ -182,6 +183,17 @@
             [self.lexemes addObject:keyword];
             isAdded = YES;
 
+        }
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"CodeData"]) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"CodeData";
+            keyword.identifier = @"CodeData";
+            keyword.value = @"";
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+            isAdded = YES;
+            
         }
         
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Int16_t"]) {
@@ -447,10 +459,13 @@
             isAdded = YES;
         }
         if (!isAdded) {
-            Keyword *incorrectKeyword = [[Keyword alloc] init];
-            incorrectKeyword.identifier = [rowComponents objectAtIndex:i];
-            incorrectKeyword.error = @"Unrecognized user input";
-            [self.incorrectElements addObject:incorrectKeyword];
+            if (![[rowComponents objectAtIndex:i]  isEqual: @":="]) {
+                Keyword *incorrectKeyword = [[Keyword alloc] init];
+                incorrectKeyword.identifier = [rowComponents objectAtIndex:i];
+                incorrectKeyword.error = @"Unrecognized user input";
+                [self.incorrectElements addObject:incorrectKeyword];
+                [self.lexemes addObject:incorrectKeyword];
+            }
         }
     }
 }
@@ -471,14 +486,23 @@
         if (![[variable.identifier substringToIndex:1] isEqualToString:@"_"]) {
             variable.error = @"Incorrect variable name declaration";
             [self.incorrectElements addObject:variable];
+            [self.lexemes addObject:variable];
         }
     }
+    BOOL variableIsFound = NO;
     for (Variable *codeVariable in self.codeDataVariables) {
         for (Variable *bodyVariable in self.bodyDataVariables) {
-            if (![codeVariable.identifier isEqualToString:bodyVariable.identifier]) {
-                codeVariable.error = @"Variable is not declared in BodyData block";
-                [self.incorrectElements addObject:codeVariable];
+            if (![codeVariable.identifier isEqualToString:bodyVariable.identifier])
+                variableIsFound = NO;
+            else{
+                variableIsFound = YES;
+                break;
             }
+        }
+        if (!variableIsFound) {
+            codeVariable.error = @"Variable is not declared in BodyData block";
+            [self.incorrectElements addObject:codeVariable];
+            [self.lexemes addObject:codeVariable];
         }
     }
 }
