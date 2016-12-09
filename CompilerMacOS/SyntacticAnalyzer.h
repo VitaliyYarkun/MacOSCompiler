@@ -10,6 +10,7 @@
 
 @interface SyntacticAnalyzer : NSObject
 
+@property (strong, nonatomic) NSMutableArray *resultVariablesArray;
 + (instancetype)sharedInstance;
 -(void) analyzeCodeData;
 

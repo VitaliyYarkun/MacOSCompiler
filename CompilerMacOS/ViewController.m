@@ -8,11 +8,15 @@
 
 #import "ViewController.h"
 #import "LexicalAnalyzer.h"
+#import "SyntacticAnalyzer.h"
+#import "Lexem.h"
 
 @interface ViewController ()
 
 @property (nonatomic, strong) IBOutlet NSTextView *textView;
 @property (nonatomic, strong) LexicalAnalyzer *lexicalAnalyzer;
+@property (nonatomic, strong) SyntacticAnalyzer *syntacticAnalyzer;
+@property (unsafe_unretained) IBOutlet NSTextView *consoleView;
 
 @end
 
@@ -21,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.lexicalAnalyzer = [LexicalAnalyzer sharedInstance];
+    self.syntacticAnalyzer = [SyntacticAnalyzer sharedInstance];
     self.textView.textColor = [NSColor blackColor];
     self.textView.automaticSpellingCorrectionEnabled = NO;
 }
@@ -37,6 +42,12 @@
 }
 
 - (IBAction)syntacticAnalysisAction:(NSButton *)sender {
+    [self.syntacticAnalyzer analyzeCodeData];
+    NSMutableString *resultString = [[NSMutableString alloc] init];
+    for (Lexem *lexem in self.syntacticAnalyzer.resultVariablesArray) {
+        [resultString appendFormat:@"%@ = %@", lexem.identifier, lexem.resultValue];
+    }
+    [self.consoleView setString:resultString];
     
 }
 

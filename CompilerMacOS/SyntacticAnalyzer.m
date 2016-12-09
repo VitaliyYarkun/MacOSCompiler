@@ -32,19 +32,10 @@
     return sharedInstance;
 }
 
--(void) setCodeDataElements:(NSMutableArray *)codeDataElements {
-    self.codeDataElements = codeDataElements;
-}
-
--(NSMutableArray *) codeDataElements {
-    NSMutableArray *codeDataElements = [[NSMutableArray alloc] init];
-    return codeDataElements;
-}
-
 -(void) sortCodeDataContent {
     self.lexicalAnalyzer = [LexicalAnalyzer sharedInstance];
     NSMutableArray *rowsWithElements = [[NSMutableArray alloc] initWithArray:self.lexicalAnalyzer.arrayOfRowsElements];
-    
+    self.codeDataElements = [[NSMutableArray alloc] init];
     BOOL codeDataDetected = NO;
     for (NSMutableArray *rowElements in rowsWithElements) {
         for (NSString *element in rowElements) {
@@ -53,15 +44,16 @@
             if ([element isEqualToString:@"End"])
                 codeDataDetected = NO;
             if (codeDataDetected)
-                [self.codeDataElements addObject:rowsWithElements];
+                [self.codeDataElements addObject:rowElements];
             
         }
     }
 }
 -(void) analyzeCodeData{
-    [self sortCodeDataContent];
+    self.resultVariablesArray = [[NSMutableArray alloc] init];
     self.oparationManager = [OperationManager sharedInstance];
     NSMutableArray *loopStack = [[NSMutableArray alloc] init];
+    [self sortCodeDataContent];
     //NSInteger loopCounter = 0;
     BOOL shouldAddToLoopStack = NO;
     for (NSInteger i = 0; i < [self.codeDataElements count]; i++) {
@@ -93,9 +85,26 @@
                             firstLexem.resultValue = [self.oparationManager addOperandOne:firstLexem.resultValue toOperandTwo:anotherLexem.resultValue];
                             k++;
                         }
+                        else if ([objectAtIndexK isEqualToString:@"++"] && [self isInteger:objectAtIndexKPlusOne])
+                        {
+                            firstLexem.resultValue = [self.oparationManager addOperandOne:firstLexem.resultValue toOperandTwo:objectAtIndexKPlusOne];
+                            k++;
+                        }
+                        else if ([objectAtIndexK isEqualToString:@"-"] && [[objectAtIndexKPlusOne substringToIndex:1] isEqualToString:@"_"])
+                        {
+                            Lexem *anotherLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexKPlusOne];
+                            firstLexem.resultValue = [self.oparationManager subtractOperandOne:anotherLexem.resultValue fromOperandTwo:firstLexem.resultValue];
+                            k++;
+                        }
+                        else if ([objectAtIndexK isEqualToString:@"-"] && [self isInteger:objectAtIndexKPlusOne])
+                        {
+                            firstLexem.resultValue = [self.oparationManager subtractOperandOne:objectAtIndexKPlusOne fromOperandTwo:firstLexem.resultValue];
+                            k++;
+                        }
                     }
                     
                 }
+                [self.resultVariablesArray addObject:firstLexem];
             }
             
             if ([lexem isEqualToString:@"Until"]) {
