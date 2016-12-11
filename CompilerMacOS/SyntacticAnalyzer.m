@@ -18,6 +18,17 @@
 @property (nonatomic, strong) NSMutableArray *codeDataElements;
 @property (nonatomic, strong) LexicalAnalyzer *lexicalAnalyzer;
 
+@property (nonatomic, strong) NSString *variableDetectedLexem;
+@property (nonatomic, assign) NSInteger variableDetectedI;
+
+
+@property (nonatomic, assign) NSInteger writeDetectedI;
+@property (nonatomic, assign) NSInteger writeDetectedJ;
+
+@property (nonatomic, assign) NSInteger readDetectedI;
+@property (nonatomic, assign) NSInteger readDetectedJ;
+
+
 
 @end
 
@@ -69,127 +80,39 @@
             }
             
             if ([[lexem substringToIndex:1] isEqualToString:@"_"]) {
-                Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:lexem];
-                j = 2;
-                NSString *objectAtIndexJ = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j];
-                NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
-                NSString *objectAtIndexJPlusTwo = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2];
+                self.variableDetectedLexem = lexem;
+                self.variableDetectedI = i;
+                [self variableDetectedMethod];
                 
-                if ([objectAtIndexJPlusOne isEqualToString:@"++"]) {
-                    Lexem *firstOperand;
-                    Lexem *secondOperand;
-                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        firstLexem.resultValue = [self.oparationManager addOperandOne:firstOperand.resultValue toOperandTwo:objectAtIndexJPlusTwo];
-                    }
-                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager addOperandOne:firstOperand.resultValue toOperandTwo:secondOperand.resultValue];
-                    }
-                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager addOperandOne:objectAtIndexJ toOperandTwo:secondOperand.resultValue];
-                    }
-                    else {
-                        firstLexem.resultValue = [self.oparationManager addOperandOne:objectAtIndexJ toOperandTwo:objectAtIndexJPlusTwo];
-                    }
+                if (shouldAddToLoopStack) {
+                    NSString *selectorString = NSStringFromSelector(@selector(variableDetectedMethod));
+                    [loopStack addObject:selectorString];
                 }
-                else if ([objectAtIndexJPlusOne isEqualToString:@"-"]) {
-                    Lexem *firstOperand;
-                    Lexem *secondOperand;
-                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        firstLexem.resultValue = [self.oparationManager subtractOperandOne:objectAtIndexJPlusTwo fromOperandTwo:firstOperand.resultValue];
-                    }
-                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager subtractOperandOne:secondOperand.resultValue fromOperandTwo:firstOperand.resultValue];
-                    }
-                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager subtractOperandOne:secondOperand.resultValue fromOperandTwo:objectAtIndexJ];
-                    }
-                    else {
-                        firstLexem.resultValue = [self.oparationManager subtractOperandOne:objectAtIndexJPlusTwo fromOperandTwo:objectAtIndexJ];
-                    }
-                }
-                if ([objectAtIndexJPlusOne isEqualToString:@"**"]) {
-                    Lexem *firstOperand;
-                    Lexem *secondOperand;
-                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        firstLexem.resultValue = [self.oparationManager multiplyOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
-                    }
-                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager multiplyOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
-                    }
-                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager multiplyOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
-                    }
-                    else {
-                        firstLexem.resultValue = [self.oparationManager multiplyOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
-                    }
-                }
-                else if ([objectAtIndexJPlusOne isEqualToString:@"Div"]) {
-                    Lexem *firstOperand;
-                    Lexem *secondOperand;
-                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        firstLexem.resultValue = [self.oparationManager divideOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
-                    }
-                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager divideOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
-                    }
-                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager divideOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
-                    }
-                    else {
-                        firstLexem.resultValue = [self.oparationManager divideOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
-                    }
-                }
-                else if ([objectAtIndexJPlusOne isEqualToString:@"Mod"]) {
-                    Lexem *firstOperand;
-                    Lexem *secondOperand;
-                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        firstLexem.resultValue = [self.oparationManager modOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
-                    }
-                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager modOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
-                    }
-                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
-                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
-                        firstLexem.resultValue = [self.oparationManager modOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
-                    }
-                    else {
-                        firstLexem.resultValue = [self.oparationManager modOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
-                    }
-                }
+                
                 break;
             }
             
             if ([lexem isEqualToString:@"Read"]) {
-                NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
-                Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusOne];
-                NSString *displayMessage = [NSString stringWithFormat:@"Please input the Int16 number to save in variable %@, default value will be 0", firstLexem.identifier];
-                firstLexem.resultValue = [self input:displayMessage defaultValue:@"0"];
+                self.readDetectedI = i;
+                self.readDetectedJ = j;
+                [self readDetectedMethod];
+                if (shouldAddToLoopStack) {
+                    NSString *selectorString = NSStringFromSelector(@selector(readDetectedMethod));
+                    [loopStack addObject:selectorString];
+                }
                 break;
             }
             
             if ([lexem isEqualToString:@"Write"]) {
-                NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
-                Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusOne];
-                [self.variablesToDisplay addObject:firstLexem];
+                self.writeDetectedI = i;
+                self.writeDetectedJ = j;
+                [self writeDetectedMethod];
+                
+                if (shouldAddToLoopStack) {
+                    NSString *selectorString = NSStringFromSelector(@selector(writeDetectedMethod));
+                    [loopStack addObject:selectorString];
+                }
+                
                 break;
             }
             
@@ -221,6 +144,134 @@
         NSAssert1(NO, @"Invalid input dialog button %ld", button);
         return nil;
     }
+}
+
+-(void) readDetectedMethod {
+    NSInteger i = self.readDetectedI;
+    NSInteger j = self.readDetectedJ;
+    NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
+    Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusOne];
+    NSString *displayMessage = [NSString stringWithFormat:@"Please input the Int16 number to save in variable %@, default value will be 0", firstLexem.identifier];
+    firstLexem.resultValue = [self input:displayMessage defaultValue:@"0"];
+}
+
+-(void) writeDetectedMethod {
+    NSInteger i = self.writeDetectedI;
+    NSInteger j = self.writeDetectedJ;
+    NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
+    Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusOne];
+    [self.variablesToDisplay addObject:firstLexem];
+}
+
+-(void) variableDetectedMethod{
+    Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:self.variableDetectedLexem];
+    NSInteger j = 2;
+    NSInteger i = self.variableDetectedI;
+    NSString *objectAtIndexJ = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j];
+    NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
+    NSString *objectAtIndexJPlusTwo = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2];
+    
+    if ([objectAtIndexJPlusOne isEqualToString:@"++"]) {
+        Lexem *firstOperand;
+        Lexem *secondOperand;
+        if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            firstLexem.resultValue = [self.oparationManager addOperandOne:firstOperand.resultValue toOperandTwo:objectAtIndexJPlusTwo];
+        }
+        else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager addOperandOne:firstOperand.resultValue toOperandTwo:secondOperand.resultValue];
+        }
+        else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager addOperandOne:objectAtIndexJ toOperandTwo:secondOperand.resultValue];
+        }
+        else {
+            firstLexem.resultValue = [self.oparationManager addOperandOne:objectAtIndexJ toOperandTwo:objectAtIndexJPlusTwo];
+        }
+    }
+    else if ([objectAtIndexJPlusOne isEqualToString:@"-"]) {
+        Lexem *firstOperand;
+        Lexem *secondOperand;
+        if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            firstLexem.resultValue = [self.oparationManager subtractOperandOne:objectAtIndexJPlusTwo fromOperandTwo:firstOperand.resultValue];
+        }
+        else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager subtractOperandOne:secondOperand.resultValue fromOperandTwo:firstOperand.resultValue];
+        }
+        else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager subtractOperandOne:secondOperand.resultValue fromOperandTwo:objectAtIndexJ];
+        }
+        else {
+            firstLexem.resultValue = [self.oparationManager subtractOperandOne:objectAtIndexJPlusTwo fromOperandTwo:objectAtIndexJ];
+        }
+    }
+    if ([objectAtIndexJPlusOne isEqualToString:@"**"]) {
+        Lexem *firstOperand;
+        Lexem *secondOperand;
+        if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            firstLexem.resultValue = [self.oparationManager multiplyOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
+        }
+        else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager multiplyOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
+        }
+        else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager multiplyOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
+        }
+        else {
+            firstLexem.resultValue = [self.oparationManager multiplyOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
+        }
+    }
+    else if ([objectAtIndexJPlusOne isEqualToString:@"Div"]) {
+        Lexem *firstOperand;
+        Lexem *secondOperand;
+        if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            firstLexem.resultValue = [self.oparationManager divideOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
+        }
+        else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager divideOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
+        }
+        else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager divideOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
+        }
+        else {
+            firstLexem.resultValue = [self.oparationManager divideOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
+        }
+    }
+    else if ([objectAtIndexJPlusOne isEqualToString:@"Mod"]) {
+        Lexem *firstOperand;
+        Lexem *secondOperand;
+        if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            firstLexem.resultValue = [self.oparationManager modOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
+        }
+        else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager modOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
+        }
+        else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+            secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+            firstLexem.resultValue = [self.oparationManager modOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
+        }
+        else {
+            firstLexem.resultValue = [self.oparationManager modOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
+        }
+    }
+    
 }
 
 - (BOOL)isInteger:(NSString *)toCheck {
