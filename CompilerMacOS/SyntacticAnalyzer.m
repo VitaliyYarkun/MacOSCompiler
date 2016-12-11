@@ -67,43 +67,110 @@
             
             if ([[lexem substringToIndex:1] isEqualToString:@"_"]) {
                 Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:lexem];
+                j = 2;
+                NSString *objectAtIndexJ = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j];
+                NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
+                NSString *objectAtIndexJPlusTwo = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2];
                 
-                for (NSInteger k = 2; k < [[self.codeDataElements objectAtIndex:i] count] - 1; k++) {
-                    NSString *objectAtIndexK = [[self.codeDataElements objectAtIndex:i] objectAtIndex:k];
-                    NSLog(@"%lu",(unsigned long)[[self.codeDataElements objectAtIndex:i] count]);
-                    if ([self isInteger:objectAtIndexK] && k==2) {
-                        firstLexem.resultValue = objectAtIndexK;
+                if ([objectAtIndexJPlusOne isEqualToString:@"++"]) {
+                    Lexem *firstOperand;
+                    Lexem *secondOperand;
+                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        firstLexem.resultValue = [self.oparationManager addOperandOne:firstOperand.resultValue toOperandTwo:objectAtIndexJPlusTwo];
                     }
-                    else if ([[objectAtIndexK substringToIndex:1] isEqualToString:@"_"] && k==2){
-                        Lexem *anotherLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexK];
-                        firstLexem.resultValue = anotherLexem.resultValue;
+                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager addOperandOne:firstOperand.resultValue toOperandTwo:secondOperand.resultValue];
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager addOperandOne:objectAtIndexJ toOperandTwo:secondOperand.resultValue];
                     }
                     else {
-                        NSString *objectAtIndexKPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:k+1];
-                        if ([objectAtIndexK isEqualToString:@"++"] && [[objectAtIndexKPlusOne substringToIndex:1] isEqualToString:@"_"])
-                        {
-                            Lexem *anotherLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexKPlusOne];
-                            firstLexem.resultValue = [self.oparationManager addOperandOne:firstLexem.resultValue toOperandTwo:anotherLexem.resultValue];
-                            k++;
-                        }
-                        else if ([objectAtIndexK isEqualToString:@"++"] && [self isInteger:objectAtIndexKPlusOne])
-                        {
-                            firstLexem.resultValue = [self.oparationManager addOperandOne:firstLexem.resultValue toOperandTwo:objectAtIndexKPlusOne];
-                            k++;
-                        }
-                        else if ([objectAtIndexK isEqualToString:@"-"] && [[objectAtIndexKPlusOne substringToIndex:1] isEqualToString:@"_"])
-                        {
-                            Lexem *anotherLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexKPlusOne];
-                            firstLexem.resultValue = [self.oparationManager subtractOperandOne:anotherLexem.resultValue fromOperandTwo:firstLexem.resultValue];
-                            k++;
-                        }
-                        else if ([objectAtIndexK isEqualToString:@"-"] && [self isInteger:objectAtIndexKPlusOne])
-                        {
-                            firstLexem.resultValue = [self.oparationManager subtractOperandOne:objectAtIndexKPlusOne fromOperandTwo:firstLexem.resultValue];
-                            k++;
-                        }
+                        firstLexem.resultValue = [self.oparationManager addOperandOne:objectAtIndexJ toOperandTwo:objectAtIndexJPlusTwo];
                     }
-                    
+                }
+                else if ([objectAtIndexJPlusOne isEqualToString:@"-"]) {
+                    Lexem *firstOperand;
+                    Lexem *secondOperand;
+                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        firstLexem.resultValue = [self.oparationManager subtractOperandOne:objectAtIndexJPlusTwo fromOperandTwo:firstOperand.resultValue];
+                    }
+                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager subtractOperandOne:secondOperand.resultValue fromOperandTwo:firstOperand.resultValue];
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager subtractOperandOne:secondOperand.resultValue fromOperandTwo:objectAtIndexJ];
+                    }
+                    else {
+                        firstLexem.resultValue = [self.oparationManager subtractOperandOne:objectAtIndexJPlusTwo fromOperandTwo:objectAtIndexJ];
+                    }
+                }
+                if ([objectAtIndexJPlusOne isEqualToString:@"**"]) {
+                    Lexem *firstOperand;
+                    Lexem *secondOperand;
+                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        firstLexem.resultValue = [self.oparationManager multiplyOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
+                    }
+                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager multiplyOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager multiplyOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
+                    }
+                    else {
+                        firstLexem.resultValue = [self.oparationManager multiplyOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
+                    }
+                }
+                else if ([objectAtIndexJPlusOne isEqualToString:@"Div"]) {
+                    Lexem *firstOperand;
+                    Lexem *secondOperand;
+                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        firstLexem.resultValue = [self.oparationManager divideOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
+                    }
+                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager divideOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager divideOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
+                    }
+                    else {
+                        firstLexem.resultValue = [self.oparationManager divideOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
+                    }
+                }
+                else if ([objectAtIndexJPlusOne isEqualToString:@"Mod"]) {
+                    Lexem *firstOperand;
+                    Lexem *secondOperand;
+                    if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        firstLexem.resultValue = [self.oparationManager modOperandOne:firstOperand.resultValue byOperandTwo:objectAtIndexJPlusTwo];
+                    }
+                    else if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        firstOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager modOperandOne:firstOperand.resultValue byOperandTwo:secondOperand.resultValue];
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        secondOperand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+                        firstLexem.resultValue = [self.oparationManager modOperandOne:objectAtIndexJ byOperandTwo:secondOperand.resultValue];
+                    }
+                    else {
+                        firstLexem.resultValue = [self.oparationManager modOperandOne:objectAtIndexJ byOperandTwo:objectAtIndexJPlusTwo];
+                    }
                 }
                 break;
             }
