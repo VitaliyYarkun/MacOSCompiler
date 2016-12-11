@@ -66,7 +66,7 @@
 }
 -(void) analyzeCodeData{
     self.oparationManager = [OperationManager sharedInstance];
-    NSMutableArray *loopStack = [[NSMutableArray alloc] init];
+    NSMutableArray *loopQueue = [[NSMutableArray alloc] init];
     self.variablesToDisplay = [[NSMutableArray alloc] init];
     [self sortCodeDataContent];
     //NSInteger loopCounter = 0;
@@ -86,7 +86,7 @@
                 
                 if (shouldAddToLoopStack) {
                     NSString *selectorString = NSStringFromSelector(@selector(variableDetectedMethod));
-                    [loopStack addObject:selectorString];
+                    [loopQueue addObject:selectorString];
                 }
                 
                 break;
@@ -98,7 +98,7 @@
                 [self readDetectedMethod];
                 if (shouldAddToLoopStack) {
                     NSString *selectorString = NSStringFromSelector(@selector(readDetectedMethod));
-                    [loopStack addObject:selectorString];
+                    [loopQueue addObject:selectorString];
                 }
                 break;
             }
@@ -110,7 +110,7 @@
                 
                 if (shouldAddToLoopStack) {
                     NSString *selectorString = NSStringFromSelector(@selector(writeDetectedMethod));
-                    [loopStack addObject:selectorString];
+                    [loopQueue addObject:selectorString];
                 }
                 
                 break;
@@ -119,6 +119,157 @@
             if ([lexem isEqualToString:@"Until"]) {
                 
                 shouldAddToLoopStack = NO;
+                j=1;
+                NSString *objectAtIndexJ = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j];
+                NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
+                NSString *objectAtIndexJPlusTwo = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2];
+                
+                
+                
+//                if (![self isInteger:objectAtIndexJ]) {
+//                    Lexem *operand = [self findLexemInBodyDataByIdentidier:objectAtIndexJ];
+//                    NSString *firstOperandString = operand.resultValue;
+//                    firstOperand = [firstOperandString integerValue];
+//                }
+//                else{
+//                    NSString *firstOperandString = objectAtIndexJ;
+//                    firstOperand = [firstOperandString integerValue];
+//                }
+//                
+//                if (![self isInteger:objectAtIndexJPlusTwo]) {
+//                    Lexem *operand = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusTwo];
+//                    NSString *secondOperandString = operand.resultValue;
+//                    secondOperand = [secondOperandString integerValue];
+//                }
+//                else {
+//                    NSString *secondOperandString = objectAtIndexJPlusTwo;
+//                    secondOperand = [secondOperandString integerValue];
+//                }
+                
+                if ([objectAtIndexJPlusOne isEqualToString:@"="]) {
+                    if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue] == [[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2]].resultValue integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue] == [objectAtIndexJPlusTwo integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([objectAtIndexJ integerValue] == [[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2]].resultValue integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                }
+                else if ([objectAtIndexJPlusOne isEqualToString:@"<>"]) {
+                    if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue] != [[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2]].resultValue integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue] != [objectAtIndexJPlusTwo integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([objectAtIndexJ integerValue] != [[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2]].resultValue integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                }
+                else if ([objectAtIndexJPlusOne isEqualToString:@"Lt"]) {
+                    if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue] > [[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2]].resultValue integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue] > [objectAtIndexJPlusTwo integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([objectAtIndexJ integerValue] > [[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2]].resultValue integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else  {
+                        while ([objectAtIndexJ integerValue] > [objectAtIndexJPlusTwo integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                }
+                else if ([objectAtIndexJPlusOne isEqualToString:@"Et"]) {
+                    if (![self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue] < [[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2]].resultValue integerValue]) {
+                            
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else if (![self isInteger:objectAtIndexJ] && [self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue] < [objectAtIndexJPlusTwo integerValue]) {
+                            NSLog(@"First = %ld second = %ld", (long)[[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j]].resultValue integerValue],(long)[objectAtIndexJPlusTwo integerValue]);
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelector:selectorFromQueue];
+                            }
+                        }
+                    }
+                    else if ([self isInteger:objectAtIndexJ] && ![self isInteger:objectAtIndexJPlusTwo]) {
+                        while ([objectAtIndexJ integerValue] < [[self findLexemInBodyDataByIdentidier:[[self.codeDataElements objectAtIndex:i] objectAtIndex:j+2]].resultValue integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                    else  {
+                        while ([objectAtIndexJ integerValue] < [objectAtIndexJPlusTwo integerValue]) {
+                            for (NSString *selectorName in loopQueue) {
+                                SEL selectorFromQueue = NSSelectorFromString(selectorName);
+                                [self performSelectorOnMainThread:selectorFromQueue withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                }
+                
+                break;
             }
         }
 
