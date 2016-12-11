@@ -10,12 +10,14 @@
 #import "OperationManager.h"
 #import "Lexem.h"
 #import "LexicalAnalyzer.h"
+#import <Cocoa/Cocoa.h>
 
 @interface SyntacticAnalyzer()
 
 @property (nonatomic, strong) OperationManager *oparationManager;
 @property (nonatomic, strong) NSMutableArray *codeDataElements;
 @property (nonatomic, strong) LexicalAnalyzer *lexicalAnalyzer;
+
 
 @end
 
@@ -54,6 +56,7 @@
 -(void) analyzeCodeData{
     self.oparationManager = [OperationManager sharedInstance];
     NSMutableArray *loopStack = [[NSMutableArray alloc] init];
+    self.variablesToDisplay = [[NSMutableArray alloc] init];
     [self sortCodeDataContent];
     //NSInteger loopCounter = 0;
     BOOL shouldAddToLoopStack = NO;
@@ -175,12 +178,48 @@
                 break;
             }
             
+            if ([lexem isEqualToString:@"Read"]) {
+                NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
+                Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusOne];
+                NSString *displayMessage = [NSString stringWithFormat:@"Please input the Int16 number to save in variable %@, default value will be 0", firstLexem.identifier];
+                firstLexem.resultValue = [self input:displayMessage defaultValue:@"0"];
+                break;
+            }
+            
+            if ([lexem isEqualToString:@"Write"]) {
+                NSString *objectAtIndexJPlusOne = [[self.codeDataElements objectAtIndex:i] objectAtIndex:j+1];
+                Lexem *firstLexem = [self findLexemInBodyDataByIdentidier:objectAtIndexJPlusOne];
+                [self.variablesToDisplay addObject:firstLexem];
+                break;
+            }
+            
             if ([lexem isEqualToString:@"Until"]) {
                 
                 shouldAddToLoopStack = NO;
             }
         }
 
+    }
+}
+- (NSString *) input: (NSString *) prompt defaultValue: (NSString *)defaultValue {
+    NSAlert *alert = [NSAlert alertWithMessageText: prompt
+                                     defaultButton:@"OK"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@""];
+    
+    NSTextField *inputTextField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+    [inputTextField setStringValue:defaultValue];
+    [alert setAccessoryView:inputTextField];
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [inputTextField validateEditing];
+        return [inputTextField stringValue];
+    } else if (button == NSAlertAlternateReturn) {
+        return nil;
+    } else {
+        NSAssert1(NO, @"Invalid input dialog button %ld", button);
+        return nil;
     }
 }
 

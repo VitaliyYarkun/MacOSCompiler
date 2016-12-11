@@ -28,8 +28,8 @@
     self.syntacticAnalyzer = [SyntacticAnalyzer sharedInstance];
     self.textView.textColor = [NSColor blackColor];
     self.textView.automaticSpellingCorrectionEnabled = NO;
+    
 }
-
 
 - (void)setRepresentedObject:(id)representedObject {
     [super setRepresentedObject:representedObject];
@@ -44,7 +44,7 @@
 - (IBAction)syntacticAnalysisAction:(NSButton *)sender {
     [self.syntacticAnalyzer analyzeCodeData];
     NSMutableString *resultString = [[NSMutableString alloc] init];
-    for (Lexem *lexem in self.lexicalAnalyzer.bodyDataVariables) {
+    for (Lexem *lexem in self.syntacticAnalyzer.variablesToDisplay) {
         [resultString appendFormat:@"%@ = %@\n", lexem.identifier, lexem.resultValue];
     }
     [self.consoleView setString:resultString];
