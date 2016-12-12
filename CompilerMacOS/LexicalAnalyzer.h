@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSMutableArray *lexemes;
 @property (strong, nonatomic) NSMutableArray *operators;
 @property (strong, nonatomic) NSMutableArray *arrayOfRowsElements;
+@property (strong, nonatomic) NSMutableArray *incorrectElements;
 
 + (instancetype)sharedInstance;
 - (void) scanCode:(NSString *) code;

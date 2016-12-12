@@ -66,10 +66,13 @@
     }
 }
 -(void) analyzeCodeData{
+    
     self.oparationManager = [OperationManager sharedInstance];
-    NSMutableArray *loopQueue = [[NSMutableArray alloc] init];
     self.variablesToDisplay = [[NSMutableArray alloc] init];
     [self sortCodeDataContent];
+    if ([self.lexicalAnalyzer.incorrectElements count] != 0) {
+        return;
+    }
     //NSInteger loopCounter = 0;
     BOOL shouldAddToLoopStack = NO;
     for (NSInteger i = 0; i < [self.codeDataElements count]; i++) {

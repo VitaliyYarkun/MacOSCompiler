@@ -17,7 +17,6 @@
 @interface LexicalAnalyzer ()
 
 @property (strong, nonatomic) NSString* programCode;
-@property (strong, nonatomic) NSMutableArray *incorrectElements;
 
 @end
 

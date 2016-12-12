@@ -725,12 +725,12 @@
                                     <action selector="lexicalAnalysisAction:" target="XfG-lQ-9wD" id="YEw-B8-hzB"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RO8-mB-q8F">
-                                <rect key="frame" x="180" y="124" width="137" height="32"/>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RO8-mB-q8F">
+                                <rect key="frame" x="172" y="124" width="137" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="125" id="BE5-OV-wNJ"/>
                                 </constraints>
-                                <buttonCell key="cell" type="push" title="Syntactic analysis" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hCl-8L-PJC">
+                                <buttonCell key="cell" type="push" title="Build" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hCl-8L-PJC">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
