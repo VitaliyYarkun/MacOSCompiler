@@ -11,19 +11,19 @@
 @interface OperationManager : NSObject
 
 + (instancetype)sharedInstance;
--(NSString *) addOperandOne:(NSString *) firstOperand toOperandTwo:(NSString *) secondOperand;
--(NSString *) subtractOperandOne:(NSString *) firstOperand fromOperandTwo:(NSString *) secondOperand;
--(NSString *) multiplyOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand;
--(NSString *) divideOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand;
--(NSString *) modOperandOne:(NSString *) firstOperand byOperandTwo:(NSString *) secondOperand;
+-(int16_t) addOperandOne:(int16_t) firstOperand toOperandTwo:(int16_t) secondOperand;
+-(int16_t) subtractOperandOne:(int16_t) firstOperand fromOperandTwo:(int16_t) secondOperand;
+-(int16_t) multiplyOperandOne:(int16_t) firstOperand byOperandTwo:(int16_t) secondOperand;
+-(int16_t) divideOperandOne:(int16_t) firstOperand byOperandTwo:(int16_t) secondOperand;
+-(int16_t) modOperandOne:(int16_t) firstOperand byOperandTwo:(int16_t) secondOperand;
 
--(BOOL) checkIfOperandOne:(NSInteger) firstOperand isEqualToOperandTwo:(NSInteger) secondOperand;
--(BOOL) checkIfOperandOne:(NSInteger) firstOperand isNotEqualToOperandTwo:(NSInteger) secondOperand;
--(BOOL) checkIfOperandOne:(NSInteger) firstOperand isGreaterThanOperandTwo:(NSInteger) secondOperand;
--(BOOL) checkIfOperandOne:(NSInteger) firstOperand isLessThanOperandTwo:(NSInteger) secondOperand;
+-(BOOL) checkIfOperandOne:(int16_t) firstOperand isEqualToOperandTwo:(int16_t) secondOperand;
+-(BOOL) checkIfOperandOne:(int16_t) firstOperand isNotEqualToOperandTwo:(int16_t) secondOperand;
+-(BOOL) checkIfOperandOne:(int16_t) firstOperand isGreaterThanOperandTwo:(int16_t) secondOperand;
+-(BOOL) checkIfOperandOne:(int16_t) firstOperand isLessThanOperandTwo:(int16_t) secondOperand;
 
--(NSInteger) logicalNotOfOperand:(NSInteger) operand;
--(NSInteger) logicalAndOfOperandOne:(NSInteger) firstOperand andOperandTwo:(NSInteger) secondOperand;
--(NSInteger) logicalOrOfOperandOne:(NSInteger) firstOperand andOperandTwo:(NSInteger) secondOperand;
+-(int16_t) logicalNotOfOperand:(int16_t) operand;
+-(int16_t) logicalAndOfOperandOne:(int16_t) firstOperand andOperandTwo:(int16_t) secondOperand;
+-(int16_t) logicalOrOfOperandOne:(int16_t) firstOperand andOperandTwo:(int16_t) secondOperand;
 
 @end

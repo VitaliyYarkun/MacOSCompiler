@@ -7,7 +7,6 @@
 //
 
 #import "LexicalAnalyzer.h"
-#import "Global.h"
 #import "Keyword.h"
 #import "Variable.h"
 #import "Operator.h"
@@ -158,7 +157,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"Name";
             keyword.identifier = @"Name";
-            keyword.resultValue = @"";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
             
@@ -166,7 +164,6 @@
             variable.catagory = @"Variable";
             variable.type = previousElement;
             variable.identifier = [rowComponents objectAtIndex:i+1];
-            variable.resultValue = @"";
             [self.lexemes addObject:variable];
             i++;
             isAdded = YES;
@@ -177,7 +174,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"BodyData";
             keyword.identifier = @"BodyData";
-            keyword.resultValue = @"";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
             isAdded = YES;
@@ -188,7 +184,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"CodeData";
             keyword.identifier = @"CodeData";
-            keyword.resultValue = @"";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
             isAdded = YES;
@@ -218,7 +213,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"Int16_t";
             keyword.identifier = @"Int16_t";
-            keyword.resultValue = @"";
             previousElement = @"Int16_t";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
@@ -228,7 +222,8 @@
             variable.catagory = @"Variable";
             variable.type = @"Int16_t";
             variable.identifier = [rowComponents objectAtIndex:i+1];
-            variable.resultValue = [rowComponents objectAtIndex:i+3];
+            int16_t resultValue = (int16_t)[[rowComponents objectAtIndex:i+3] integerValue];
+            variable.resultValue = resultValue;
             [self.bodyDataVariables addObject:variable];
             [self.lexemes addObject:variable];
 
@@ -237,7 +232,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Assignment";
             operator.identifier = @":=";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             
@@ -245,7 +239,6 @@
             literal.catagory = @"Literal";
             literal.type = @"Int16_t";
             literal.identifier = [rowComponents objectAtIndex:i];
-            literal.resultValue = [rowComponents objectAtIndex:i];
 
             [self.literals addObject:literal];
             [self.lexemes addObject:literal];
@@ -260,7 +253,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"Loop";
             keyword.identifier = @"Repeat";
-            keyword.resultValue = @"";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
             isAdded = YES;
@@ -270,7 +262,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Math";
             operator.identifier = @"++";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -280,7 +271,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Math";
             operator.identifier = @"--";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -291,7 +281,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"Loop";
             keyword.identifier = @"Until";
-            keyword.resultValue = @"";
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
             isAdded = YES;
@@ -302,7 +291,6 @@
             variable.catagory = @"Variable";
             variable.type = @"Int16_t";
             variable.identifier = [rowComponents objectAtIndex:i];
-            variable.resultValue = @"";
             [self.codeDataVariables addObject:variable];
             //[self.lexemes addObject:variable];
             isAdded = YES;
@@ -313,7 +301,6 @@
             literal.catagory = @"Literal";
             literal.type = @"Int16_t";
             literal.identifier = [rowComponents objectAtIndex:i];
-            literal.resultValue = [rowComponents objectAtIndex:i];
             
             [self.literals addObject:literal];
             [self.lexemes addObject:literal];
@@ -325,7 +312,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"Block end";
             keyword.identifier = @"End";
-            keyword.resultValue = @"";
             
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
@@ -337,7 +323,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"I/O function";
             keyword.identifier = @"Read";
-            keyword.resultValue = @"";
             
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
@@ -348,7 +333,6 @@
             keyword.catagory = @"Keyword";
             keyword.type = @"I/O function";
             keyword.identifier = @"Write";
-            keyword.resultValue = @"";
             
             [self.keywords addObject:keyword];
             [self.lexemes addObject:keyword];
@@ -359,7 +343,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Math";
             operator.identifier = @"**";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -370,7 +353,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Math";
             operator.identifier = @"Div";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -381,7 +363,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Math";
             operator.identifier = @"Div";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -392,7 +373,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Compare operator";
             operator.identifier = @"=";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -402,7 +382,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Compare operator";
             operator.identifier = @"<>";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -412,7 +391,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Compare operator";
             operator.identifier = @"Lt";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -422,7 +400,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Compare operator";
             operator.identifier = @"Et";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -432,7 +409,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Boolean operator";
             operator.identifier = @"!";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -442,7 +418,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Boolean operator";
             operator.identifier = @"&";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;
@@ -452,7 +427,6 @@
             operator.catagory = @"Operator";
             operator.type = @"Boolean operator";
             operator.identifier = @"|";
-            operator.resultValue = @"";
             [self.operators addObject:operator];
             [self.lexemes addObject:operator];
             isAdded = YES;

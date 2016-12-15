@@ -47,7 +47,7 @@
     
     if ([self.lexicalAnalyzer.incorrectElements count] == 0) {
         for (Lexem *lexem in self.syntacticAnalyzer.variablesToDisplay) {
-            [resultString appendFormat:@"%@ = %@\n", lexem.identifier, lexem.resultValue];
+            [resultString appendFormat:@"%@ = %hd\n", lexem.identifier, lexem.resultValue];
         }
     }
     else{

@@ -13,7 +13,7 @@
 @property (nonatomic, strong) NSString *catagory;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *identifier;
-@property (nonatomic, strong) NSString *resultValue;
+@property (nonatomic, assign) int16_t resultValue;
 @property (nonatomic, strong) NSString *error;
 
 @end
