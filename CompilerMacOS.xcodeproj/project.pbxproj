@@ -44,7 +44,6 @@
 		EFE1B0441DF3561C0021997D /* LexemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LexemViewController.m; sourceTree = "<group>"; };
 		EFE1B0481DF357590021997D /* LexicalAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LexicalAnalyzer.h; sourceTree = "<group>"; };
 		EFE1B0491DF357590021997D /* LexicalAnalyzer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LexicalAnalyzer.m; sourceTree = "<group>"; };
-		EFE1B04B1DF35BDF0021997D /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
 		EFE1B04C1DF41C020021997D /* Lexem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lexem.h; sourceTree = "<group>"; };
 		EFE1B04D1DF41C020021997D /* Lexem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Lexem.m; sourceTree = "<group>"; };
 		EFE1B0511DF41D0A0021997D /* Keyword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyword.h; sourceTree = "<group>"; };
@@ -114,7 +113,6 @@
 		EFE1B02A1DF34E600021997D /* CompilerMacOS */ = {
 			isa = PBXGroup;
 			children = (
-				EFE1B04B1DF35BDF0021997D /* Global.h */,
 				EFE1B0601DF41DB30021997D /* LexemModels */,
 				EFE1B0471DF356320021997D /* LexemViewController */,
 				EFE1B0421DF355D10021997D /* LexicalAnalyzer */,

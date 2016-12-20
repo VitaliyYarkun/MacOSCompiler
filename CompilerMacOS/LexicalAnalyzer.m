@@ -247,7 +247,24 @@
             i += 3;
             isAdded = YES;
         }
-        
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"If"]) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"Condition";
+            keyword.identifier = @"If";
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+            isAdded = YES;
+        }
+        if ([[rowComponents objectAtIndex:i] isEqualToString:@"End_If"]) {
+            Keyword *keyword = [[Keyword alloc] init];
+            keyword.catagory = @"Keyword";
+            keyword.type = @"Condition";
+            keyword.identifier = @"End_If";
+            [self.keywords addObject:keyword];
+            [self.lexemes addObject:keyword];
+            isAdded = YES;
+        }
         if ([[rowComponents objectAtIndex:i] isEqualToString:@"Repeat"]) {
             Keyword *keyword = [[Keyword alloc] init];
             keyword.catagory = @"Keyword";
